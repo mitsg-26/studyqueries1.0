@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StudyQueries — Agentic Research Workspace</title>
+  <title>StudyQueriesLLM</title>
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -145,7 +145,7 @@
           <i data-lucide="brain-circuit" class="w-6 h-6"></i>
         </div>
         <div>
-          <h1 class="font-cinzel text-lg tracking-[0.12em] font-bold text-slate-900 dark:text-white">STUDYQUERIES</h1>
+          <h1 class="font-cinzel text-lg tracking-[0.12em] font-bold text-slate-900 dark:text-white">STUDYQUERIESLLM</h1>
           <p class="text-[10px] tracking-wider text-gray-400 dark:text-gray-500 font-bold uppercase">ONLINE RESEARCH HUB</p>
         </div>
       </div>
@@ -221,7 +221,7 @@
         <aside class="w-full lg:w-80 border-r border-gray-200 dark:border-neutral-800 p-6 flex flex-col gap-6 shrink-0 bg-white/50 dark:bg-[#1a1a1f]/30 overflow-y-auto">
           <!-- Grounding Ingestion Dropzone -->
           <div>
-            <h3 class="font-cinzel text-xs tracking-wider text-gray-400 dark:text-gray-500 mb-3 font-semibold">GROUNDING INGESTION</h3>
+            <h3 class="font-cinzel text-xs tracking-wider text-gray-400 dark:text-gray-500 mb-3 font-semibold">FILES</h3>
             <div 
               @dragover.prevent="dragOver = true"
               @dragleave.prevent="dragOver = false"
@@ -528,7 +528,7 @@
                 <i data-lucide="bot" class="w-4.5 h-4.5"></i>
               </div>
               <div>
-                <h3 class="font-cinzel text-sm tracking-wider font-bold text-slate-900 dark:text-white">AI SYNTHESIS AGENT</h3>
+                <h3 class="font-cinzel text-sm tracking-wider font-bold text-slate-900 dark:text-white">SearchaBot</h3>
                 <p class="text-[10px] text-gray-400 dark:text-gray-500">Grounded analysis via studyqueriesLLM.</p>
               </div>
             </div>
@@ -657,14 +657,14 @@
       </div>
 
       <!-- PAGE 3: RESEARCH ROADMAP -->
-      <div v-show="activePage === 'roadmap'" class="h-full flex flex-col md:flex-row overflow-hidden">
+      <div v-show="activePage === 'roadmap'" class="flex flex-col lg:flex-row lg:h-full lg:overflow-hidden">
         
         <!-- Interactive Concept Mindmap -->
-        <div class="flex-1 p-6 border-b md:border-b-0 md:border-r border-gray-200 dark:border-neutral-800 flex flex-col gap-4 min-w-0">
+        <div class="flex-1 p-6 border-b md:border-b-0 md:border-r border-gray-200 dark:border-neutral-800 flex flex-col gap-4 min-w-0 min-h-[600px] lg:min-h-0">
           <div class="flex items-center justify-between">
             <div>
               <h2 class="font-cinzel text-base tracking-widest font-bold text-slate-900 dark:text-white">CONCEPT MINDMAP</h2>
-              <p class="text-xs text-gray-400 dark:text-gray-500">Movable & expandable concept nodes. Connect multiple mothers per child node.</p>
+              <p class="text-xs text-gray-400 dark:text-gray-500">Movable & expandable concept nodes. Connect multiple parents per child concept.</p>
             </div>
             <button @click="resetMindmap" class="text-xs font-bold text-purple-600 dark:text-purple-400 hover:underline flex items-center gap-1">
               <i data-lucide="undo" class="w-3.5 h-3.5"></i> Reset Mindmap
@@ -682,16 +682,16 @@
             <svg class="absolute inset-0 w-full h-full pointer-events-none">
               <!-- Draw lines from mother nodes to children -->
               <g v-for="node in mindmapNodes" :key="'lines-'+node.id">
-                <path 
-                  v-for="parentId in node.parents"
-                  :key="parentId"
-                  v-if="getNodeById(parentId)"
-                  :d="getConnectionPath(getNodeById(parentId), node)"
-                  stroke="#abadb5" 
-                  stroke-width="1.5"
-                  stroke-dasharray="3,3"
-                  fill="transparent"
-                  class="dark:stroke-neutral-700" />
+                <g v-for="parentId in node.parents" :key="parentId">
+                  <path 
+                    v-if="getNodeById(parentId)"
+                    :d="getConnectionPath(getNodeById(parentId), node)"
+                    stroke="#abadb5" 
+                    stroke-width="1.5"
+                    stroke-dasharray="3,3"
+                    fill="transparent"
+                    class="dark:stroke-neutral-700" />
+                </g>
               </g>
             </svg>
 
@@ -713,7 +713,7 @@
               
               <template v-if="node.type === 'nexus'">
                 <div class="flex items-center justify-between mb-1">
-                  <span class="text-[8px] font-bold tracking-widest text-amber-900 dark:text-amber-100 uppercase">Research Nexus</span>
+                  <span class="text-[8px] font-bold tracking-widest text-amber-900 dark:text-amber-100 uppercase">Main Concept</span>
                   <button @click.stop="pruneMindmapNode(node.id)" class="text-amber-900/50 dark:text-amber-100/50 hover:text-red-500">
                     <i data-lucide="minus-circle" class="w-3.5 h-3.5"></i>
                   </button>
@@ -768,7 +768,7 @@
             <div class="absolute bottom-4 left-4 right-4 bg-white/95 dark:bg-[#1a1a1f]/95 border border-gray-100 dark:border-neutral-800 p-3 rounded-2xl flex items-center justify-between gap-2 shadow-lg max-w-sm">
               <input 
                 type="text" 
-                placeholder="Spawn concept..." 
+                placeholder="New concept name..." 
                 v-model="newConceptLabel"
                 @keyup.enter="addMindmapNode"
                 class="flex-1 bg-gray-50 dark:bg-neutral-900 px-3 py-1.5 text-xs rounded-xl focus:outline-none border border-gray-200 dark:border-neutral-800 text-slate-800 dark:text-gray-100" />
@@ -780,12 +780,12 @@
               <button 
                 @click="addMindmapNexus"
                 class="px-3.5 py-1.5 rounded-xl bg-amber-200 text-amber-900 text-xs font-bold hover:opacity-90 transition-all shadow-sm border border-amber-300 dark:bg-amber-800 dark:text-amber-100 dark:border-amber-700">
-                + Nexus
+                + Main Concept
               </button>
             </div>
           </div>
 
-          <!-- Selected Node configuration drawer/card (to manage Multiple Mother nodes) -->
+          <!-- Selected Node configuration drawer/card (to manage Multiple Parent nodes) -->
           <div v-if="selectedNode" class="p-4 border border-gray-200 dark:border-neutral-800 rounded-2xl bg-gray-50 dark:bg-neutral-900 flex flex-col gap-3 animate-in fade-in duration-200">
             <div class="flex items-center justify-between">
               <h3 class="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 flex items-center gap-1">
@@ -841,7 +841,7 @@
         </div>
 
         <!-- Right Side: Focus Timer & Milestone Roadmap -->
-        <div class="w-full md:w-80 p-6 shrink-0 flex flex-col gap-6 overflow-y-auto bg-white/50 dark:bg-charcoal/30">
+        <div class="w-full lg:w-80 p-6 shrink-0 flex flex-col gap-6 min-h-[500px] lg:min-h-0 lg:overflow-y-auto h-auto lg:h-full bg-white/50 dark:bg-charcoal/30">
           
           <!-- Focus Time (Enhanced 2-mode Timer) -->
           <div class="p-5 border border-gray-200 dark:border-neutral-800 rounded-3xl bg-white dark:bg-charcoal">
@@ -1181,7 +1181,7 @@
           if (url.toLowerCase().endsWith('.pdf') || url.includes('/pdf/')) {
             return `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
           }
-          return url;
+          return ''; // Do not iframe external web URLs to prevent page block errors
         });
 
         const persistSearchHistory = () => {
@@ -1477,60 +1477,7 @@
         const centerNodeX = ref(220);
         const centerNodeY = ref(160);
         
-        const mindmapNodes = ref([
-          {
-            id: "nexus-1",
-            type: "nexus",
-            label: "Transformer Ecosystem",
-            x: 220,
-            y: 160,
-            parents: []
-          },
-          {
-            id: "node-1",
-            type: "node",
-            label: "Self-Attention",
-            description: "Computes align maps dynamically using Key, Query, and Value matrices.",
-            x: 100,
-            y: 70,
-            theme: "lavender",
-            expanded: false,
-            parents: ["nexus-1"]
-          },
-          {
-            id: "node-2",
-            type: "node",
-            label: "LoRA Adapters",
-            description: "Injects low-rank decomposition rank weights while freezing core weights.",
-            x: 400,
-            y: 80,
-            theme: "mist",
-            expanded: false,
-            parents: ["node-1"]
-          },
-          {
-            id: "node-3",
-            type: "node",
-            label: "Sinusoidal Embedding",
-            description: "Preserves sequence token coordinates directly using static wave vectors.",
-            x: 120,
-            y: 280,
-            theme: "peach",
-            expanded: false,
-            parents: ["nexus-1"]
-          },
-          {
-            id: "node-4",
-            type: "node",
-            label: "Decoder Cross-Attention",
-            description: "Connects multiple mother node layers (Self-Attention and Sinusoidal coordinates) directly into sequence predictions.",
-            x: 410,
-            y: 290,
-            theme: "lavender",
-            expanded: false,
-            parents: ["node-1", "node-3"] // Multi-mother node child connection!
-          }
-        ]);
+        const mindmapNodes = ref([]);
 
         const selectedNode = ref(null);
         const draggingNodeId = ref(null);
@@ -1629,7 +1576,7 @@
             id,
             type: "node",
             label,
-            description: "Click parameters tool to adjust description and mother nodes.",
+            description: "Click parameters tool to adjust description and parent concepts.",
             x: Math.max(40, Math.min(480, newX)),
             y: Math.max(40, Math.min(320, newY)),
             theme: Math.random() > 0.5 ? 'lavender' : 'mist',
@@ -1640,19 +1587,19 @@
           mindmapNodes.value.push(newNode);
           newConceptLabel.value = '';
           persistMindmap();
-          showToast(`Spawned Node: ${label}`, 'info');
+          showToast(`Added Concept: ${label}`, 'info');
           triggerChime(620, 'triangle');
         };
         
         const addMindmapNexus = () => {
-          const id = `NEXUS-${mindmapNodes.value.length + 1}`;
+          const id = `CONCEPT-MAIN-${mindmapNodes.value.length + 1}`;
           const newX = Math.max(40, Math.min(480, centerNodeX.value + (Math.random() * 60 - 30)));
           const newY = Math.max(40, Math.min(320, centerNodeY.value + (Math.random() * 60 - 30)));
 
           const newNexus = {
             id,
             type: "nexus",
-            label: "New Research Nexus",
+            label: "New Main Concept",
             x: newX,
             y: newY,
             parents: []
@@ -1660,7 +1607,7 @@
 
           mindmapNodes.value.push(newNexus);
           persistMindmap();
-          showToast(`Spawned new Nexus`, 'info');
+          showToast(`Added new Main Concept`, 'info');
           triggerChime(620, 'triangle');
         };
 
@@ -1676,16 +1623,10 @@
         };
 
         const resetMindmap = () => {
-           mindmapNodes.value = [
-            { id: "nexus-1", type: "nexus", label: "Transformer Ecosystem", x: 220, y: 160, parents: [] },
-            { id: "node-1", type: "node", label: "Self-Attention", description: "Computes align maps dynamically.", x: 100, y: 70, theme: "lavender", expanded: false, parents: ["nexus-1"] },
-            { id: "node-2", type: "node", label: "LoRA Adapters", description: "Low rank matrix decomposition parameter adaptation.", x: 400, y: 80, theme: "mist", expanded: false, parents: ["node-1"] },
-            { id: "node-3", type: "node", label: "Sinusoidal Embedding", description: "Static sinusoidal sequence positional coordinates.", x: 120, y: 280, theme: "peach", expanded: false, parents: ["nexus-1"] },
-            { id: "node-4", type: "node", label: "Decoder Cross-Attention", description: "Bridges multi-parent mother parameters to predictions.", x: 410, y: 290, theme: "lavender", expanded: false, parents: ["node-1", "node-3"] }
-          ];
+           mindmapNodes.value = [];
           selectedNode.value = null;
           persistMindmap();
-          showToast("Nexus concept mindmap reset to defaults.", "info");
+          showToast("Concept mindmap cleared.", "info");
         };
 
         // Focus Time (Pomodoro vs Regular Timer)
